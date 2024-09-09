@@ -1,175 +1,142 @@
-import React, { useState } from 'react';
-import { Camera } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>혁신적인 콜드브루 추출 시스템</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            margin: 20px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 15px;
+            color: #333;
+            text-decoration: none;
+        }
+        .main-section {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #f5f5f5;
+        }
+        .cta-button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form label, form input, form textarea {
+            margin: 10px 0;
+            width: 80%;
+            max-width: 500px;
+        }
+        form button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>혁신적인 콜드브루 추출 시스템</h1>
+    </header>
 
-const languages = {
-  ko: { flag: '🇰🇷', name: '한국어' },
-  en: { flag: '🇬🇧', name: 'English' },
-  fr: { flag: '🇫🇷', name: 'Français' },
-  ja: { flag: '🇯🇵', name: '日本語' },
-};
-
-const translations = {
-  ko: {
-    title: '첨단 콜드브루 머신',
-    home: '홈',
-    features: '특징',
-    specs: '사양',
-    contact: '연락처',
-    heroTitle: '혁명적인 콜드브루 기술',
-    heroSubtitle: '우리의 첨단 머신으로 완벽한 콜드브루를 경험하세요',
-    learnMore: '더 알아보기',
-    keyFeatures: '주요 특징',
-    feature1: '냉장 밀폐 추출',
-    feature2: '스프레이 물 분사 시스템',
-    feature3: '대용량 (최대 3kg의 커피)',
-    feature4: '정밀 제어를 위한 디지털 입력',
-    imageCaption: '콜드브루 머신 이미지',
-    contactUs: '문의하기',
-    name: '이름',
-    email: '이메일',
-    message: '메시지',
-    send: '보내기',
-  },
-  en: {
-    title: 'Advanced Cold Brew Machine',
-    home: 'Home',
-    features: 'Features',
-    specs: 'Specifications',
-    contact: 'Contact',
-    heroTitle: 'Revolutionary Cold Brew Technology',
-    heroSubtitle: 'Experience the perfect cold brew with our advanced machine',
-    learnMore: 'Learn More',
-    keyFeatures: 'Key Features',
-    feature1: 'Refrigerated, sealed extraction',
-    feature2: 'Spray water distribution system',
-    feature3: 'Large capacity (up to 3kg of coffee)',
-    feature4: 'Digital input for precise control',
-    imageCaption: 'Image of the Cold Brew Machine',
-    contactUs: 'Contact Us',
-    name: 'Name',
-    email: 'Email',
-    message: 'Message',
-    send: 'Send',
-  },
-  fr: {
-    title: 'Machine à Café Froid Avancée',
-    home: 'Accueil',
-    features: 'Caractéristiques',
-    specs: 'Spécifications',
-    contact: 'Contact',
-    heroTitle: 'Technologie Révolutionnaire de Café Froid',
-    heroSubtitle: 'Découvrez le café froid parfait avec notre machine avancée',
-    learnMore: 'En Savoir Plus',
-    keyFeatures: 'Caractéristiques Principales',
-    feature1: 'Extraction réfrigérée et scellée',
-    feature2: 'Système de distribution d\'eau par pulvérisation',
-    feature3: 'Grande capacité (jusqu\'à 3 kg de café)',
-    feature4: 'Entrée numérique pour un contrôle précis',
-    imageCaption: 'Image de la Machine à Café Froid',
-    contactUs: 'Contactez-nous',
-    name: 'Nom',
-    email: 'E-mail',
-    message: 'Message',
-    send: 'Envoyer',
-  },
-  ja: {
-    title: '先進的なコールドブリューマシン',
-    home: 'ホーム',
-    features: '特徴',
-    specs: '仕様',
-    contact: 'お問い合わせ',
-    heroTitle: '革新的なコールドブリュー技術',
-    heroSubtitle: '当社の先進的なマシンで完璧なコールドブリューを体験してください',
-    learnMore: '詳細を見る',
-    keyFeatures: '主な特徴',
-    feature1: '冷蔵密閉抽出',
-    feature2: 'スプレー式水分配システム',
-    feature3: '大容量（最大3kgのコーヒー）',
-    feature4: '精密制御のためのデジタル入力',
-    imageCaption: 'コールドブリューマシンの画像',
-    contactUs: 'お問い合わせ',
-    name: '名前',
-    email: 'メールアドレス',
-    message: 'メッセージ',
-    send: '送信',
-  },
-};
-
-const LanguageSelector = ({ setLanguage }) => (
-  <div className="absolute top-0 right-0 p-4">
-    {Object.entries(languages).map(([code, { flag, name }]) => (
-      <button key={code} onClick={() => setLanguage(code)} className="mx-1">
-        {flag} {name}
-      </button>
-    ))}
-  </div>
-);
-
-const Header = ({ t }) => (
-  <header className="bg-blue-600 text-white p-4 relative">
-    <h1 className="text-2xl font-bold">{t.title}</h1>
-    <nav className="mt-2">
-      <a href="#home" className="mr-4">{t.home}</a>
-      <a href="#features" className="mr-4">{t.features}</a>
-      <a href="#specs" className="mr-4">{t.specs}</a>
-      <a href="#contact" className="mr-4">{t.contact}</a>
+    <nav>
+        <a href="#product-intro">제품 소개</a>
+        <a href="#technical-advantages">기술적 장점</a>
+        <a href="#usage-guide">사용 가이드</a>
+        <a href="#contact-us">문의하기</a>
     </nav>
-  </header>
-);
 
-const Hero = ({ t }) => (
-  <section className="bg-gray-100 p-8 text-center">
-    <h2 className="text-3xl font-bold mb-4">{t.heroTitle}</h2>
-    <p className="mb-4">{t.heroSubtitle}</p>
-    <button className="bg-blue-500 text-white px-4 py-2 rounded">{t.learnMore}</button>
-  </section>
-);
-
-const Features = ({ t }) => (
-  <section className="p-8">
-    <h2 className="text-2xl font-bold mb-4">{t.keyFeatures}</h2>
-    <ul className="list-disc pl-5">
-      <li>{t.feature1}</li>
-      <li>{t.feature2}</li>
-      <li>{t.feature3}</li>
-      <li>{t.feature4}</li>
-    </ul>
-  </section>
-);
-
-const ImageSection = ({ t }) => (
-  <section className="bg-gray-200 p-8 text-center">
-    <Camera size={48} className="mx-auto mb-4" />
-    <p>{t.imageCaption}</p>
-  </section>
-);
-
-const Contact = ({ t }) => (
-  <section className="p-8">
-    <h2 className="text-2xl font-bold mb-4">{t.contactUs}</h2>
-    <form>
-      <input type="text" placeholder={t.name} className="block w-full mb-2 p-2 border rounded" />
-      <input type="email" placeholder={t.email} className="block w-full mb-2 p-2 border rounded" />
-      <textarea placeholder={t.message} className="block w-full mb-2 p-2 border rounded"></textarea>
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">{t.send}</button>
-    </form>
-  </section>
-);
-
-const HomePage = () => {
-  const [language, setLanguage] = useState('ko');
-  const t = translations[language];
-
-  return (
-    <div>
-      <LanguageSelector setLanguage={setLanguage} />
-      <Header t={t} />
-      <Hero t={t} />
-      <Features t={t} />
-      <ImageSection t={t} />
-      <Contact t={t} />
+    <div class="main-section">
+        <h1>차원이 다른 콜드브루 추출 기술</h1>
+        <p>우리의 콜드브루 머신으로 고품질, 대용량 콜드브루를 생산하세요.</p>
+        <button class="cta-button">제품 문의</button>
+        <button class="cta-button">구매하기</button>
     </div>
-  );
-};
 
-export default HomePage;
+    <section id="product-intro">
+        <h2>제품 소개</h2>
+        <img src="product.jpg" alt="콜드브루 추출기">
+        <p>우리 콜드브루 추출기는 상업용에 최적화된 대용량 추출 시스템을 갖추고 있습니다. 냉장 밀폐 추출과 스프레이 방식의 물 분사로 일관된 품질의 콜드브루를 만드세요.</p>
+    </section>
+
+    <section id="technical-advantages">
+        <h2>기술적 장점</h2>
+        <ul>
+            <li><strong>냉장 밀폐 추출:</strong> 온도 관리로 위생적이고 효율적입니다.</li>
+            <li><strong>스프레이 방식 물 분사:</strong> 균일한 추출로 최상의 품질 보장.</li>
+            <li><strong>대용량 추출:</strong> 최대 3kg까지 대량 추출 가능.</li>
+            <li><strong>디지털 입력 시스템:</strong> 정밀한 제어로 재현성 높음.</li>
+        </ul>
+    </section>
+
+    <section id="usage-guide">
+        <h2>사용 가이드</h2>
+        <p>우리 콜드브루 머신은 간편하게 사용할 수 있도록 설계되었습니다. 아래 가이드를 따라 최적의 성능을 유지하세요:</p>
+        <ol>
+            <li>원두를 분쇄하여 투입하세요.</li>
+            <li>디지털 입력 시스템으로 원하는 추출 설정을 입력하세요.</li>
+            <li>추출 완료 후, 기기를 청소하고 유지 보수하세요.</li>
+        </ol>
+    </section>
+
+    <section id="contact-us">
+        <h2>문의하기</h2>
+        <form action="/submit-form" method="post">
+            <label for="name">이름:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">이메일:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">메시지:</label>
+            <textarea id="message" name="message" required></textarea>
+
+            <button type="submit">보내기</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 혁신적인 콜드브루 추출 시스템</p>
+    </footer>
+</body>
+</html>
